@@ -1,20 +1,42 @@
-# Service Hub
+# :bulb: Service Hub
 A web app that can showcase the talent and skills of other people. Features: Post a Service, Set schedule, Reminders and Notifications.
 
-## Project Time Line
+___
 
-> Phase One
+## :round_pushpin: Project Time Line
 
--- This part of the project will be focus on how to setup a working environment using virtualization or containerization.
+> :pushpin: Phase One
+
+This part of the project will be focus on how to setup a working environment using virtualization or containerization.
+___
 
 - Docker
+```
+nginx
+php8.1
+xdebug
+code-server
+MailHog
+```
+- Database
+```
+MySQL
+phpMyAdmin
+Redis
+```
 - Composer
 - NPM
 - Laravel
+```
+laravel debugbar
+laravel telescope
+PHPUnit + Code Coverage Analysis
+```
 
-> Phase Two
+> :pushpin: Phase Two
 
--- Start developing the backend
+Start developing the backend
+___
 
 - Process Layout / Documentation
 - Database Schema
@@ -23,9 +45,10 @@ A web app that can showcase the talent and skills of other people. Features: Pos
 - Design Pattern
 - TDD (Test Driven Development)
 
-> Phase Three
+> :pushpin: Phase Three
 
--- Start developing the frontend designs
+Start developing the frontend designs
+___
 
 - Laravel Mix
 - Tall Stack (Tailwind, Alpine.js, Laravel, and Livewire)
@@ -33,8 +56,13 @@ A web app that can showcase the talent and skills of other people. Features: Pos
 - Sass
 - Practice DRY method
 
-> Phase Four
+> :pushpin: Phase Four
 
--- Start on the CI/CD Process
+Start on the CI/CD Process
+___
 - GitLab CI & CD Tools
-- Deployment (AWS or Droplet)
+- Deployment (AWS or Digitalocean)
+```
+EC2
+Droplet
+```
