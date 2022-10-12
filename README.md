@@ -3,7 +3,7 @@ A web app that can showcase the talent and skills of other people. Features: Pos
 
 ___
 
-## :round_pushpin: Project Time Line
+## :round_pushpin: Project Timeline
 
 > :pushpin: Phase One
 
