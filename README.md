@@ -7,7 +7,7 @@ ___
 
 > :pushpin: Phase One
 
-This part of the project will be focus on how to setup a working environment using virtualization or containerization.
+This part of the project will focus on how to setup a working environment using virtualization or containerization.
 ___
 
 - Docker
