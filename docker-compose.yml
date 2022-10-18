@@ -1,0 +1,62 @@
+version: '3.8'
+
+networks:
+  servicehubnetwork:
+    name: servicehubnetwork
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: .config/nginx/Dockerfile
+    container_name: nginx
+    depends_on:
+      - php
+      - mysql
+      - phpmyadmin
+    ports:
+      - 8888:80
+      - 4433:443
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - servicehubnetwork
+
+  php: 
+    build:
+      context: .
+      dockerfile: .config/php/Dockerfile
+    container_name: php
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - servicehubnetwork
+
+  mysql:
+    image: mysql:5.7.32
+    container_name: mysql
+    ports:
+      - 4306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: laraveldb
+      MYSQL_USER: ${DB_SEC_USER}
+      MYSQL_PASSWORD: ${DB_SEC_PASS}
+      MYSQL_ROOT_PASSWORD: ${DB_SEC_PASS}
+    networks:
+      - servicehubnetwork
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    depends_on:
+        - mysql
+    restart: always
+    ports:
+      - 8889:80
+    environment:
+      PMA_HOST: mysql
+      MSQL_ROOT_PASSWORD: ${DB_SEC_PASS} 
+    networks:
+      - servicehubnetwork
