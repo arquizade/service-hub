@@ -15,7 +15,7 @@ services:
       - mysql
       - phpmyadmin
     ports:
-      - 8888:80
+      - 8880:80
       - 4433:443
     volumes:
       - ./src:/var/www/html
@@ -37,10 +37,10 @@ services:
   mysql:
     image: mysql:5.7.32
     container_name: mysql
+    restart: unless-stopped
+    tty: true
     ports:
       - 4306:3306
-    volumes:
-      - ./mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: laraveldb
       MYSQL_USER: ${DB_SEC_USER}
@@ -56,9 +56,103 @@ services:
         - mysql
     restart: always
     ports:
-      - 8889:80
+      - 8881:80
     environment:
       PMA_HOST: mysql
       MSQL_ROOT_PASSWORD: ${DB_SEC_PASS} 
+    networks:
+      - servicehubnetwork
+
+  code-server:
+    image: lscr.io/linuxserver/code-server
+    container_name: code-server
+    depends_on:
+        - nginx
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+      - PASSWORD=password #optional
+      - HASHED_PASSWORD= #optional
+      - SUDO_PASSWORD=password #optional
+      - SUDO_PASSWORD_HASH= #optional
+      - PROXY_DOMAIN=code-server.my.domain #optional
+      - DEFAULT_WORKSPACE=/config/workspace #optional
+    volumes:
+      - ./code_server:/config
+      - ./src:/config/workspace
+    working_dir: /config/workspace
+    ports:
+      - 8882:8443
+    restart: unless-stopped
+    networks:
+      - servicehubnetwork
+
+  composer:
+    image: composer:latest
+    container_name: composer
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - php
+    user: root
+    entrypoint: ['composer', '--ignore-platform-reqs']
+    networks:
+      - servicehubnetwork
+
+  npm:
+    image: node:current-alpine3.16
+    container_name: npm
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - 3000:3000
+      - 3001:3001
+    working_dir: /var/www/html
+    entrypoint: ['npm']
+    networks:
+      - servicehubnetwork
+
+  artisan:
+    build:
+      context: .
+      dockerfile: .config/php/Dockerfile
+    container_name: artisan
+    volumes:
+      - ./src:/var/www/html:delegated
+    depends_on:
+      - mysql
+    working_dir: /var/www/html
+    entrypoint: ['php', '/var/www/html/artisan']
+    networks:
+      - servicehubnetwork
+
+  phpunit:
+    build:
+      context: .
+      dockerfile: .config/php/Dockerfile
+    container_name: phpunit
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    entrypoint: ["/var/www/html/vendor/bin/phpunit"]
+    networks:
+      - servicehubnetwork
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - 6379:6379
+    networks:
+      - servicehubnetwork
+  
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - 1025:1025
+      - 8025:8025
     networks:
       - servicehubnetwork
