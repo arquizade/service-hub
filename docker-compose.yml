@@ -128,17 +128,17 @@ services:
     networks:
       - servicehubnetwork
 
-  phpunit:
-    build:
-      context: .
-      dockerfile: .config/php/Dockerfile
-    container_name: phpunit
-    volumes:
-      - ./src:/var/www/html
-    working_dir: /var/www/html
-    entrypoint: ["/var/www/html/vendor/bin/phpunit"]
-    networks:
-      - servicehubnetwork
+  # phpunit:
+  #   build:
+  #     context: .
+  #     dockerfile: .config/php/Dockerfile
+  #   container_name: phpunit
+  #   volumes:
+  #     - ./src:/var/www/html
+  #   working_dir: /var/www/html
+  #   entrypoint: ["/var/www/html/vendor/bin/phpunit"]
+  #   networks:
+  #     - servicehubnetwork
 
   redis:
     image: redis:latest
@@ -154,5 +154,21 @@ services:
     ports:
       - 1025:1025
       - 8025:8025
+    networks:
+      - servicehubnetwork
+
+  minio:
+    image: quay.io/minio/minio:latest
+    container_name: minio
+    command: server /data --console-address ":9001"
+    environment:
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=supersecret
+    ports:
+      - 9055:9000
+      - 9051:9001
+    volumes:
+      - ./storage/minio:/data
+    restart: unless-stopped
     networks:
       - servicehubnetwork
