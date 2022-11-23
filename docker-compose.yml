@@ -41,6 +41,8 @@ services:
     tty: true
     ports:
       - 4306:3306
+    volumes:
+      - ./mysql:/var/lib/mysql
     environment:
       MYSQL_DATABASE: laraveldb
       MYSQL_USER: ${DB_SEC_USER}
@@ -135,6 +137,8 @@ services:
     container_name: phpunit
     volumes:
       - ./src:/var/www/html
+      - .config/php/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+      - .config/php/conf.d/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
     working_dir: /var/www/html
     entrypoint: ["/var/www/html/vendor/bin/phpunit"]
     networks:
