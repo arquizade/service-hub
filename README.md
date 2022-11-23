@@ -1,5 +1,5 @@
 # :bulb: Service Hub
-A web app that can showcase the talent and skills of other people. Features: Post a Service, Set schedule, Reminders and Notifications.
+A web app that can showcase talent and skills of other people. Features: Post a Service, Set schedule, Reminders and Notifications.
 
 ___
 
@@ -23,6 +23,7 @@ MailHog
 MySQL
 phpMyAdmin
 Redis
+minio
 ```
 - Composer
 - NPM
