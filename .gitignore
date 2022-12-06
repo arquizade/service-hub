@@ -2,5 +2,4 @@ mysql
 .env
 .vscode
 code_server
-mysql
 storage

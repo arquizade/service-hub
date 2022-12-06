@@ -99,7 +99,7 @@ services:
     depends_on:
       - php
     user: root
-    entrypoint: ['composer', '--ignore-platform-reqs']
+    entrypoint: ['composer', 'install', '--ignore-platform-reqs']
     networks:
       - servicehubnetwork
 
